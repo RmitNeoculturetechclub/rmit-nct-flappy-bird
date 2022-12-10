@@ -8,9 +8,9 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 
 
-def level(speed, acce):
+def level(speed, acceleration):
     pygame.init()  # initialise pygame functions
-    width = 450
+    width = 800
     height = 600
     screen = pygame.display.set_mode((width, height))  # set the width and height of the game screen
     pygame.display.set_caption("Flappy Bird")  # set the game caption
@@ -19,7 +19,7 @@ def level(speed, acce):
 
     tube_width = 50  # tube width
     tube_velocity = speed  # tube speed
-    acceleration = acce
+    acceleration = acceleration
     tube_gap = 150
     tube1_x = width + 300
     tube2_x = width + 600
@@ -75,15 +75,15 @@ def level(speed, acce):
 
         ''' Create new tubes when old tubes disappear'''
         if tube1_x < -tube_width:
-            tube1_x = width + 100
+            tube1_x = width + 50
             tube1_height = randint(100, 400)
             tube1_pass = False  # reset the tube pass
         if tube2_x < -tube_width:
-            tube2_x = width + 100
+            tube2_x = width + 50
             tube2_height = randint(100, 400)
             tube2_pass = False  # reset the tube pass
         if tube3_x < -tube_width:
-            tube3_x = width + 100
+            tube3_x = width + 50
             tube3_height = randint(100, 400)
             tube3_pass = False  # reset the tube pass
 
@@ -114,9 +114,9 @@ def level(speed, acce):
                 tube_velocity = 0  # tubes stop moving
                 bird_drop_velocity = 0  # bird stops dropping
                 game_over_txt = font.render("GAME OVER, YOUR SCORE: " + str(score), True, RED)
-                screen.blit(game_over_txt, (100, 300))
+                screen.blit(game_over_txt, (300, 300))
                 press_space_txt = font.render("PRESS SPACE TO CONTINUE", True, RED)
-                screen.blit(press_space_txt, (100, 400))
+                screen.blit(press_space_txt, (300, 320))
 
         ''' Set event such as mouseclick, keyboard buttons, quit'''
         for event in pygame.event.get():
@@ -128,9 +128,9 @@ def level(speed, acce):
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
                         tube_velocity = 3
-                        tube1_x = 600
-                        tube2_x = 800
-                        tube3_x = 1000
+                        tube1_x = tube1_x
+                        tube2_x = tube2_x
+                        tube3_x = tube3_x
                         score = 0
                         pausing = False  # start again
                     bird_drop_velocity = 0  # reset the bird's drop speed (no gravity)
