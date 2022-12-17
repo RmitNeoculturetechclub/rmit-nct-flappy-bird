@@ -171,7 +171,7 @@ def main():
             level(2, 0.004, 0)  # medium
             break
         elif lvl == "hard":
-            level(3, 0.006, 10)  # hard
+            level(3, 0.002, 0.5)  # hard
             break
         else:
             print("Invalid syntax, please enter again: ")
