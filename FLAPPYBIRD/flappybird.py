@@ -126,8 +126,10 @@ def level(speed, acceleration):
                 bird_drop_velocity = 0  # bird stops dropping
                 game_over_txt = font.render("GAME OVER, YOUR SCORE: " + str(score), True, RED)
                 screen.blit(game_over_txt, (300, 300))
-                press_space_txt = font.render("PRESS SPACE TO CONTINUE", True, RED)
-                screen.blit(press_space_txt, (300, 320))
+                space_txt = font.render("PRESS SPACE TO JUMP", True, RED)
+                enter_txt = font.render("PRESS ENTER TO START", True, RED)
+                screen.blit(space_txt, (300, 70))
+                screen.blit(enter_txt, (300, 40))
 
         ''' Set event such as mouseclick, keyboard buttons, quit'''
         for event in pygame.event.get():
@@ -160,10 +162,10 @@ def main():
             level(1, 0.001)  # easy
             break
         elif lvl == "medium":
-            level(2, 0.002)  # medium
+            level(2, 0.004)  # medium
             break
         elif lvl == "hard":
-            level(3, 0.003)  # hard
+            level(3, 0.006)  # hard
             break
         else:
             print("Invalid syntax, please enter again: ")
