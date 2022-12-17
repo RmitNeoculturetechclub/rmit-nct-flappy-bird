@@ -123,7 +123,7 @@ def level(speed, acceleration):
             if event.type == pygame.QUIT:  # when you click on X button, it will exit the game
                 running = False
             elif event.type == pygame.KEYDOWN:  # use keyboard
-                if event.key == pygame.K_SPACE:  # space button
+                if event.key == pygame.K_RETURN:  # space button
                     # reset
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
@@ -133,6 +133,7 @@ def level(speed, acceleration):
                         tube3_x = width + 900
                         score = 0
                         pausing = False  # start again
+                if event.key == pygame.K_SPACE:  # space button
                     bird_drop_velocity = 0  # reset the bird's drop speed (no gravity)
                     bird_drop_velocity -= 5  # make the bird jump
 
