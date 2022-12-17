@@ -21,13 +21,20 @@ def level(speed, acceleration):
     tube_velocity = speed  # tube speed
     acceleration = acceleration
     tube_gap = 150
+
+    # start position of the tube
     tube1_x = width + 300
     tube2_x = width + 600
     tube3_x = width + 900
+
+    # start tube
     tube_y = 0
+
+    # random height of the tube
     tube1_height = randint(100, 400)
     tube2_height = randint(100, 400)
     tube3_height = randint(100, 400)
+
     tube1_pass = False  # at the beginning, the bird does not pass the tube
     tube2_pass = False
     tube3_pass = False
@@ -39,12 +46,16 @@ def level(speed, acceleration):
     bird_drop_velocity = 0
     gravity = 0.3
 
+    # initialize score
     score = 0
     font = pygame.font.SysFont("san", 20)  # create font and size for text on screen
 
     pausing = False  # haven't lost the game
-    background_image = pygame.image.load("background.png")
-    bird_image = pygame.image.load("bird.png")
+
+    # import images
+    background_image = pygame.image.load("images/background.png")
+    bird_image = pygame.image.load("images/bird.png")
+
     bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
 
     while running:  # game running process
@@ -115,24 +126,27 @@ def level(speed, acceleration):
                 bird_drop_velocity = 0  # bird stops dropping
                 game_over_txt = font.render("GAME OVER, YOUR SCORE: " + str(score), True, RED)
                 screen.blit(game_over_txt, (300, 300))
-                press_space_txt = font.render("PRESS SPACE TO CONTINUE", True, RED)
-                screen.blit(press_space_txt, (300, 320))
+                space_txt = font.render("PRESS SPACE TO JUMP", True, RED)
+                enter_txt = font.render("PRESS ENTER TO START", True, RED)
+                screen.blit(space_txt, (300, 70))
+                screen.blit(enter_txt, (300, 40))
 
         ''' Set event such as mouseclick, keyboard buttons, quit'''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # when you click on X button, it will exit the game
                 running = False
             elif event.type == pygame.KEYDOWN:  # use keyboard
-                if event.key == pygame.K_SPACE:  # space button
+                if event.key == pygame.K_RETURN:  # space button
                     # reset
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
                         tube_velocity = 3
-                        tube1_x = tube1_x
-                        tube2_x = tube2_x
-                        tube3_x = tube3_x
+                        tube1_x = width + 300
+                        tube2_x = width + 600
+                        tube3_x = width + 900
                         score = 0
                         pausing = False  # start again
+                if event.key == pygame.K_SPACE:  # space button
                     bird_drop_velocity = 0  # reset the bird's drop speed (no gravity)
                     bird_drop_velocity -= 5  # make the bird jump
 
@@ -148,10 +162,10 @@ def main():
             level(1, 0.001)  # easy
             break
         elif lvl == "medium":
-            level(2, 0.002)  # medium
+            level(2, 0.004)  # medium
             break
         elif lvl == "hard":
-            level(3, 0.003)  # hard
+            level(3, 0.006)  # hard
             break
         else:
             print("Invalid syntax, please enter again: ")
