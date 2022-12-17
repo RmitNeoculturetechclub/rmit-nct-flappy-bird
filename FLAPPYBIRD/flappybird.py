@@ -128,9 +128,9 @@ def level(speed, acceleration):
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
                         tube_velocity = 3
-                        tube1_x = tube1_x
-                        tube2_x = tube2_x
-                        tube3_x = tube3_x
+                        tube1_x = width + 300
+                        tube2_x = width + 600
+                        tube3_x = width + 900
                         score = 0
                         pausing = False  # start again
                     bird_drop_velocity = 0  # reset the bird's drop speed (no gravity)
