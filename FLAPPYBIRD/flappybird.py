@@ -21,13 +21,20 @@ def level(speed, acceleration):
     tube_velocity = speed  # tube speed
     acceleration = acceleration
     tube_gap = 150
+
+    # start position of the tube
     tube1_x = width + 300
     tube2_x = width + 600
     tube3_x = width + 900
+
+    # start tube
     tube_y = 0
+
+    # random height of the tube
     tube1_height = randint(100, 400)
     tube2_height = randint(100, 400)
     tube3_height = randint(100, 400)
+
     tube1_pass = False  # at the beginning, the bird does not pass the tube
     tube2_pass = False
     tube3_pass = False
@@ -39,12 +46,16 @@ def level(speed, acceleration):
     bird_drop_velocity = 0
     gravity = 0.3
 
+    # initialize score
     score = 0
     font = pygame.font.SysFont("san", 20)  # create font and size for text on screen
 
     pausing = False  # haven't lost the game
+
+    # import images
     background_image = pygame.image.load("images/background.png")
     bird_image = pygame.image.load("images/bird.png")
+
     bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
 
     while running:  # game running process
