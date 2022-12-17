@@ -43,8 +43,8 @@ def level(speed, acceleration):
     font = pygame.font.SysFont("san", 20)  # create font and size for text on screen
 
     pausing = False  # haven't lost the game
-    background_image = pygame.image.load("background.png")
-    bird_image = pygame.image.load("bird.png")
+    background_image = pygame.image.load("images/background.png")
+    bird_image = pygame.image.load("images/bird.png")
     bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
 
     while running:  # game running process
