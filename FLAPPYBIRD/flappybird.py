@@ -8,7 +8,7 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 
 
-def level(speed, acceleration):
+def level(speed, acceleration, tube_change):
     pygame.init()  # initialise pygame functions
     width = 800
     height = 600
@@ -19,6 +19,7 @@ def level(speed, acceleration):
 
     tube_width = 50  # tube width
     tube_velocity = speed  # tube speed
+    tube_change_oy = tube_change
     acceleration = acceleration
     tube_gap = 150
 
@@ -80,6 +81,11 @@ def level(speed, acceleration):
         tube1_x = tube1_x - tube_velocity
         tube2_x = tube2_x - tube_velocity
         tube3_x = tube3_x - tube_velocity
+
+        ''' Change tube's height '''
+        tube1_height = tube1_height - tube_change_oy
+        tube2_height = tube2_height - tube_change_oy
+        tube3_height = tube3_height - tube_change_oy
 
         ''' Draw sand '''
         sand_rect = pygame.draw.rect(screen, YELLOW, (0, height - 50, width, 50))
@@ -159,13 +165,13 @@ def main():
     while True:
         lvl = input("Enter the level you want (easy, medium, hard): ")
         if lvl == "easy":
-            level(1, 0.001)  # easy
+            level(1, 0.001, 0)  # easy
             break
         elif lvl == "medium":
-            level(2, 0.004)  # medium
+            level(2, 0.004, 0)  # medium
             break
         elif lvl == "hard":
-            level(3, 0.006)  # hard
+            level(3, 0.006, 10)  # hard
             break
         else:
             print("Invalid syntax, please enter again: ")
