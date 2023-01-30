@@ -23,6 +23,11 @@ def level(speed, acceleration, tube_change):
     acceleration = acceleration
     tube_gap = 150
 
+    # tubes changing condition
+    is_change1 = False
+    is_change2 = False
+    is_change3 = False
+
     # start position of the tube
     tube1_x = width + 300
     tube2_x = width + 600
@@ -56,17 +61,11 @@ def level(speed, acceleration, tube_change):
     # import images
     background_image = pygame.image.load("images/background.png")
     bird_image = pygame.image.load("images/bird.png")
-
     bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
 
     while running:  # game running process
         clock.tick(60)  # 1 sec run 60 frames
         screen.fill(GREEN)  # screen background color
-        ''' Draw hidden tubes'''
-        # hidden_tube1 = pygame.draw.rect(screen, BLUE, (tube1_x, tube_y, tube_width, 100))
-        # hidden_tube2 = pygame.draw.rect(screen, BLUE, (tube1_x, tube_y, tube_width, 100))
-        # hidden_tube3 = pygame.draw.rect(screen, BLUE, (tube1_x, tube_y, tube_width, 100))
-
         screen.blit(background_image, (0, 0))
 
         ''' Draw tubes '''
@@ -87,27 +86,36 @@ def level(speed, acceleration, tube_change):
         tube2_x = tube2_x - tube_velocity
         tube3_x = tube3_x - tube_velocity
 
-        # ''' Change tube's height '''
-        # tube1_height = tube1_height - tube_change_oy
-        # for i in range(100, 402, 2):
-        #     if tube1_height == i:
-        #         tube1_height = tube1_height + tube_change_oy
-        # if tube1_height >= 400:
-        #     for i in range(400, 98, -2):
-        #         if tube1_height == i:
-        #             tube1_height = tube1_height + tube_change_oy
-        #
-        # tube2_height = tube2_height - tube_change_oy
-        # if tube2_height <= 100:
-        #     tube2_height = tube2_height + tube_change_oy
-        # elif tube2_height >= 400:
-        #     tube2_height = tube2_height - tube_change_oy
-        #
-        # tube3_height = tube3_height - tube_change_oy
-        # if tube3_height <= 100:
-        #     tube3_height = tube3_height + tube_change_oy
-        # elif tube3_height >= 400:
-        #     tube3_height = tube3_height - tube_change_oy
+        ''' Change tube's height '''
+        # tube 1
+        if is_change1 is False:
+            tube1_height = tube1_height - tube_change_oy
+            if tube1_height <= 100:
+                is_change1 = True
+        if is_change1 is True:
+            tube1_height = tube1_height + tube_change_oy
+            if tube1_height >= 300:
+                is_change1 = False
+
+        # tube 2
+        if is_change2 is False:
+            tube2_height = tube2_height - tube_change_oy
+            if tube2_height <= 100:
+                is_change2 = True
+        if is_change2 is True:
+            tube2_height = tube2_height + tube_change_oy
+            if tube2_height >= 300:
+                is_change2 = False
+
+        # tube 3
+        if is_change3 is False:
+            tube3_height = tube3_height - tube_change_oy
+            if tube3_height <= 100:
+                is_change3 = True
+        if is_change3 is True:
+            tube3_height = tube3_height + tube_change_oy
+            if tube3_height >= 300:
+                is_change3 = False
 
         ''' Draw sand '''
         sand_rect = pygame.draw.rect(screen, YELLOW, (0, height - 50, width, 50))
@@ -145,18 +153,6 @@ def level(speed, acceleration, tube_change):
         if tube3_x + tube_width <= bird_x and tube3_pass is False:
             score += 1
             tube3_pass = True
-
-        ''' Check tube collision'''
-        change = random.randint(0, 1)
-        if tube1_height <= 100:
-            change = 1
-        elif tube1_height >= 400:
-            change = 0
-
-        if change == 1:
-            tube1_height = tube1_height - tube_change_oy
-        else:
-            tube1_height = tube1_height + tube_change_oy
 
         ''' Check collision '''
         for tube in [tube1_rect, tube2_rect, tube3_rect, tube1_rect_inv, tube2_rect_inv, tube3_rect_inv, sand_rect]:
