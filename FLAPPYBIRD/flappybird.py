@@ -210,65 +210,66 @@ def level(speed, acceleration, tube_change):
 #
 #
 # main()
-def menu():
+def set_mode():
     pygame.init()
+    width = 800
+    height = 600
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Mode")
+    game_mode = "easy"
 
-    game_level = "easy"
-
-    # create game window
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Main Menu")
-
-    # game variables
-    game_paused = False
-    menu_state = "main"
-
-    # define fonts
-    font = pygame.font.SysFont("arialblack", 40)
-
-    # define colours
-    TEXT_COL = (255, 255, 255)
-
-    # load button images
-    quit_img = pygame.image.load("images/QUIT.png").convert_alpha()
     easy_img = pygame.image.load('images/EASY.png').convert_alpha()
     medium_img = pygame.image.load('images/MEDIUM.png').convert_alpha()
     hard_img = pygame.image.load('images/HARD.png').convert_alpha()
 
-    # create button instances
-    quit_button = button.Button(250, 350, quit_img, 1)
-    easy_button = button.Button(250, 100, easy_img, 1)
-    medium_button = button.Button(250, 200, medium_img, 1)
-    hard_button = button.Button(250, 300, hard_img, 1)
+    easy_button = button.Button(240, 150, easy_img, 1)
+    medium_button = button.Button(240, 250, medium_img, 1)
+    hard_button = button.Button(240, 350, hard_img, 1)
 
-    def draw_text(text, text_font, text_col, x, y):
-        img = text_font.render(text, True, text_col)
-        screen.blit(img, (x, y))
-
-    # game loop
-    run = True
-    while run:
-
+    running = True
+    while running:
         screen.fill((52, 78, 91))
+        if easy_button.draw(screen):
+            game_mode = "easy"
+        if medium_button.draw(screen):
+            game_mode = "medium"
+        if hard_button.draw(screen):
+            game_mode = "hard"
 
-        # check if game is paused
-
-
-        # event handler
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    game_paused = True
             if event.type == pygame.QUIT:
-                run = False
-
+                running = False
         pygame.display.update()
-
     pygame.quit()
 
 
-menu()
+def main_menu():
+    pygame.init()
+    width = 800
+    height = 600
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Main Menu")
 
+    start_img = pygame.image.load("images/START.png").convert_alpha()
+    quit_img = pygame.image.load("images/QUIT.png").convert_alpha()
+
+    start_button = button.Button(240, 200, start_img, 1)
+    quit_button = button.Button(240, 300, quit_img, 1)
+
+    running = True
+    while running:
+        screen.fill((52, 78, 91))
+        if start_button.draw(screen):
+            set_mode()
+        if quit_button.draw(screen):
+            running = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
+    pygame.quit()
+
+
+main_menu()
