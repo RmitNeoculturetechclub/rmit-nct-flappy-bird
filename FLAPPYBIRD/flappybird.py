@@ -190,24 +190,6 @@ def level(speed, acceleration, tube_change):
     pygame.quit()  # finish using pygame
 
 
-# def main():
-#     while True:
-#         lvl = input("Enter the level you want (easy, medium, hard): ")
-#         if lvl == "easy":
-#             level(1, 0.001, 0)  # easy
-#             break
-#         elif lvl == "medium":
-#             level(2, 0.004, 0)  # medium
-#             break
-#         elif lvl == "hard":
-#             level(3, 0.002, 0.6)  # hard
-#             break
-#         else:
-#             print("Invalid syntax, please enter again: ")
-#             continue
-#
-#
-# main()
 def set_mode():
     pygame.init()
     width = 800
