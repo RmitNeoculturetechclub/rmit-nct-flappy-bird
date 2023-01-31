@@ -47,7 +47,7 @@ def level(speed, acceleration, tube_change):
     tube3_pass = False
 
     bird_x = 50
-    bird_y = 400
+    bird_y = 200
     bird_width = 35
     bird_height = 35
     bird_drop_velocity = 0
@@ -164,16 +164,14 @@ def level(speed, acceleration, tube_change):
                 game_over_txt = font.render("GAME OVER, YOUR SCORE: " + str(score), True, RED)
                 screen.blit(game_over_txt, (300, 300))
                 space_txt = font.render("PRESS SPACE TO JUMP", True, RED)
-                enter_txt = font.render("PRESS ENTER TO START", True, RED)
                 screen.blit(space_txt, (300, 70))
-                screen.blit(enter_txt, (300, 40))
 
         ''' Set event such as mouseclick, keyboard buttons, quit'''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # when you click on X button, it will exit the game
                 running = False
             elif event.type == pygame.KEYDOWN:  # use keyboard
-                if event.key == pygame.K_RETURN:  # space button
+                if event.key == pygame.K_SPACE:  # space button
                     # reset
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
@@ -216,31 +214,39 @@ def set_mode():
     height = 600
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Mode")
-    game_mode = "easy"
 
     easy_img = pygame.image.load('images/EASY.png').convert_alpha()
     medium_img = pygame.image.load('images/MEDIUM.png').convert_alpha()
     hard_img = pygame.image.load('images/HARD.png').convert_alpha()
 
-    easy_button = button.Button(240, 150, easy_img, 1)
-    medium_button = button.Button(240, 250, medium_img, 1)
-    hard_button = button.Button(240, 350, hard_img, 1)
+    easy_button = button.Button(400, 150, easy_img, 1)
+    medium_button = button.Button(400, 250, medium_img, 1)
+    hard_button = button.Button(400, 350, hard_img, 1)
 
     running = True
     while running:
         screen.fill((52, 78, 91))
         if easy_button.draw(screen):
-            game_mode = "easy"
+            start_game("easy")
         if medium_button.draw(screen):
-            game_mode = "medium"
+            start_game("medium")
         if hard_button.draw(screen):
-            game_mode = "hard"
+            start_game("hard")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         pygame.display.update()
     pygame.quit()
+
+
+def start_game(game_mode):
+    if game_mode == "easy":
+        level(1, 0.001, 0)  # easy
+    if game_mode == "medium":
+        level(2, 0.004, 0)  # medium
+    if game_mode == "hard":
+        level(3, 0.002, 0.6)  # hard
 
 
 def main_menu():
@@ -253,14 +259,15 @@ def main_menu():
     start_img = pygame.image.load("images/START.png").convert_alpha()
     quit_img = pygame.image.load("images/QUIT.png").convert_alpha()
 
-    start_button = button.Button(240, 200, start_img, 1)
-    quit_button = button.Button(240, 300, quit_img, 1)
+    start_button = button.Button(80, 200, start_img, 1)
+    quit_button = button.Button(80, 300, quit_img, 1)
 
     running = True
     while running:
         screen.fill((52, 78, 91))
         if start_button.draw(screen):
             set_mode()
+            running = False
         if quit_button.draw(screen):
             running = False
 
