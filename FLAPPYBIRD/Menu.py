@@ -21,13 +21,13 @@ font = pygame.font.SysFont("arialblack", 40)
 TEXT_COL = (255, 255, 255)
 
 # load button images
-start_img = pygame.image.load("START.png").convert_alpha()
-mode_img = pygame.image.load("MODE.png").convert_alpha()
-quit_img = pygame.image.load("QUIT.png").convert_alpha()
-easy_img = pygame.image.load('EASY.png').convert_alpha()
-medium_img = pygame.image.load('MEDIUM.png').convert_alpha()
-hard_img = pygame.image.load('HARD.png').convert_alpha()
-back_img = pygame.image.load('BACK.png').convert_alpha()
+start_img = pygame.image.load("images/START.png").convert_alpha()
+mode_img = pygame.image.load("images/MODE.png").convert_alpha()
+quit_img = pygame.image.load("images/QUIT.png").convert_alpha()
+easy_img = pygame.image.load('images/EASY.png').convert_alpha()
+medium_img = pygame.image.load('images/MEDIUM.png').convert_alpha()
+hard_img = pygame.image.load('images/HARD.png').convert_alpha()
+back_img = pygame.image.load('images/BACK.png').convert_alpha()
 
 # create button instances
 start_button = button.Button(250, 150, start_img, 1)

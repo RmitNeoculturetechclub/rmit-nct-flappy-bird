@@ -1,5 +1,6 @@
 import pygame  # use pygame module
-from random import randint
+import random
+import button
 
 GREEN = (0, 200, 0)  # RGB color selector
 BLUE = (0, 0, 255)
@@ -8,7 +9,7 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 
 
-def level(speed, acceleration):
+def level(speed, acceleration, tube_change):
     pygame.init()  # initialise pygame functions
     width = 800
     height = 600
@@ -19,15 +20,28 @@ def level(speed, acceleration):
 
     tube_width = 50  # tube width
     tube_velocity = speed  # tube speed
+    tube_change_oy = tube_change
     acceleration = acceleration
     tube_gap = 150
+
+    # tubes changing condition
+    is_change1 = False
+    is_change2 = False
+    is_change3 = False
+
+    # start position of the tube
     tube1_x = width + 300
     tube2_x = width + 600
     tube3_x = width + 900
+
+    # start tube
     tube_y = 0
-    tube1_height = randint(100, 400)
-    tube2_height = randint(100, 400)
-    tube3_height = randint(100, 400)
+
+    # random height of the tube
+    tube1_height = random.randint(100, 400)
+    tube2_height = random.randint(100, 400)
+    tube3_height = random.randint(100, 400)
+
     tube1_pass = False  # at the beginning, the bird does not pass the tube
     tube2_pass = False
     tube3_pass = False
@@ -39,12 +53,15 @@ def level(speed, acceleration):
     bird_drop_velocity = 0
     gravity = 0.3
 
+    # initialize score
     score = 0
     font = pygame.font.SysFont("san", 20)  # create font and size for text on screen
 
     pausing = False  # haven't lost the game
-    background_image = pygame.image.load("background.png")
-    bird_image = pygame.image.load("bird.png")
+
+    # import images
+    background_image = pygame.image.load("images/background.png")
+    bird_image = pygame.image.load("images/bird.png")
     bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
 
     while running:  # game running process
@@ -70,21 +87,52 @@ def level(speed, acceleration):
         tube2_x = tube2_x - tube_velocity
         tube3_x = tube3_x - tube_velocity
 
+        ''' Change tube's height '''
+        # tube 1
+        if is_change1 is False:
+            tube1_height = tube1_height - tube_change_oy
+            if tube1_height <= 100:
+                is_change1 = True
+        if is_change1 is True:
+            tube1_height = tube1_height + tube_change_oy
+            if tube1_height >= 300:
+                is_change1 = False
+
+        # tube 2
+        if is_change2 is False:
+            tube2_height = tube2_height - tube_change_oy
+            if tube2_height <= 100:
+                is_change2 = True
+        if is_change2 is True:
+            tube2_height = tube2_height + tube_change_oy
+            if tube2_height >= 300:
+                is_change2 = False
+
+        # tube 3
+        if is_change3 is False:
+            tube3_height = tube3_height - tube_change_oy
+            if tube3_height <= 100:
+                is_change3 = True
+        if is_change3 is True:
+            tube3_height = tube3_height + tube_change_oy
+            if tube3_height >= 300:
+                is_change3 = False
+
         ''' Draw sand '''
         sand_rect = pygame.draw.rect(screen, YELLOW, (0, height - 50, width, 50))
 
         ''' Create new tubes when old tubes disappear'''
         if tube1_x < -tube_width:
             tube1_x = width + 50
-            tube1_height = randint(100, 400)
+            tube1_height = random.randint(100, 400)
             tube1_pass = False  # reset the tube pass
         if tube2_x < -tube_width:
             tube2_x = width + 50
-            tube2_height = randint(100, 400)
+            tube2_height = random.randint(100, 400)
             tube2_pass = False  # reset the tube pass
         if tube3_x < -tube_width:
             tube3_x = width + 50
-            tube3_height = randint(100, 400)
+            tube3_height = random.randint(100, 400)
             tube3_pass = False  # reset the tube pass
 
         ''' Draw bird'''
@@ -115,24 +163,27 @@ def level(speed, acceleration):
                 bird_drop_velocity = 0  # bird stops dropping
                 game_over_txt = font.render("GAME OVER, YOUR SCORE: " + str(score), True, RED)
                 screen.blit(game_over_txt, (300, 300))
-                press_space_txt = font.render("PRESS SPACE TO CONTINUE", True, RED)
-                screen.blit(press_space_txt, (300, 320))
+                space_txt = font.render("PRESS SPACE TO JUMP", True, RED)
+                enter_txt = font.render("PRESS ENTER TO START", True, RED)
+                screen.blit(space_txt, (300, 70))
+                screen.blit(enter_txt, (300, 40))
 
         ''' Set event such as mouseclick, keyboard buttons, quit'''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # when you click on X button, it will exit the game
                 running = False
             elif event.type == pygame.KEYDOWN:  # use keyboard
-                if event.key == pygame.K_SPACE:  # space button
+                if event.key == pygame.K_RETURN:  # space button
                     # reset
                     if pausing:  # if player lost the game, reset all
                         bird_y = 400
                         tube_velocity = 3
-                        tube1_x = tube1_x
-                        tube2_x = tube2_x
-                        tube3_x = tube3_x
+                        tube1_x = width + 300
+                        tube2_x = width + 600
+                        tube3_x = width + 900
                         score = 0
                         pausing = False  # start again
+                if event.key == pygame.K_SPACE:  # space button
                     bird_drop_velocity = 0  # reset the bird's drop speed (no gravity)
                     bird_drop_velocity -= 5  # make the bird jump
 
@@ -141,21 +192,109 @@ def level(speed, acceleration):
     pygame.quit()  # finish using pygame
 
 
-def main():
-    while True:
-        lvl = input("Enter the level you want (easy, medium, hard): ")
-        if lvl == "easy":
-            level(1, 0.001)  # easy
-            break
-        elif lvl == "medium":
-            level(2, 0.002)  # medium
-            break
-        elif lvl == "hard":
-            level(3, 0.003)  # hard
-            break
+# def main():
+#     while True:
+#         lvl = input("Enter the level you want (easy, medium, hard): ")
+#         if lvl == "easy":
+#             level(1, 0.001, 0)  # easy
+#             break
+#         elif lvl == "medium":
+#             level(2, 0.004, 0)  # medium
+#             break
+#         elif lvl == "hard":
+#             level(3, 0.002, 0.6)  # hard
+#             break
+#         else:
+#             print("Invalid syntax, please enter again: ")
+#             continue
+#
+#
+# main()
+def menu():
+    pygame.init()
+
+    # create game window
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
+
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Main Menu")
+
+    # game variables
+    game_paused = False
+    menu_state = "main"
+
+    # define fonts
+    font = pygame.font.SysFont("arialblack", 40)
+
+    # define colours
+    TEXT_COL = (255, 255, 255)
+
+    # load button images
+    start_img = pygame.image.load("images/START.png").convert_alpha()
+    mode_img = pygame.image.load("images/MODE.png").convert_alpha()
+    quit_img = pygame.image.load("images/QUIT.png").convert_alpha()
+    easy_img = pygame.image.load('images/EASY.png').convert_alpha()
+    medium_img = pygame.image.load('images/MEDIUM.png').convert_alpha()
+    hard_img = pygame.image.load('images/HARD.png').convert_alpha()
+    back_img = pygame.image.load('images/BACK.png').convert_alpha()
+
+    # create button instances
+    start_button = button.Button(250, 150, start_img, 1)
+    mode_button = button.Button(250, 250, mode_img, 1)
+    quit_button = button.Button(250, 350, quit_img, 1)
+    easy_button = button.Button(250, 100, easy_img, 1)
+    medium_button = button.Button(250, 200, medium_img, 1)
+    hard_button = button.Button(250, 300, hard_img, 1)
+    back_button = button.Button(250, 400, back_img, 1)
+
+    def draw_text(text, text_font, text_col, x, y):
+        img = text_font.render(text, True, text_col)
+        screen.blit(img, (x, y))
+
+    # game loop
+    run = True
+    while run:
+
+        screen.fill((52, 78, 91))
+
+        # check if game is paused
+        if game_paused:
+            # check menu state
+            if menu_state == "main":
+                # draw pause screen buttons
+                if start_button.draw(screen):
+                    game_paused = False
+                if mode_button.draw(screen):
+                    menu_state = "options"
+                if quit_button.draw(screen):
+                    run = False
+            # check if the options menu is open
+            if menu_state == "options":
+                # draw the different options buttons
+                if easy_button.draw(screen):
+                    level(1, 0.001, 0)  # easy
+                if medium_button.draw(screen):
+                    level(2, 0.004, 0)  # medium
+                if hard_button.draw(screen):
+                    level(3, 0.002, 0.6)  # hard
+                if back_button.draw(screen):
+                    menu_state = "main"
         else:
-            print("Invalid syntax, please enter again: ")
-            continue
+            draw_text("Press SPACE to enter the game", font, TEXT_COL, 60, 250)
+
+        # event handler
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_paused = True
+            if event.type == pygame.QUIT:
+                run = False
+
+        pygame.display.update()
+
+    pygame.quit()
 
 
-main()
+menu()
+
